@@ -28,6 +28,7 @@ class DroneNavigation(gym.Env):
         # Initialize plotting
         self.fig, self.ax = plt.subplots()
         self.step_count = 0
+        self.map_plotted = False  # Flag to control the plotting of the probability map
 
     def _generate_obstacles(self):
         obstacles = set()
@@ -37,6 +38,16 @@ class DroneNavigation(gym.Env):
                 obstacles.add(pos)
         return obstacles
 
+    def _generate_probability_map(self):
+        prob_map = np.zeros((self.area_size, self.area_size))
+        sigma = 1.0  # Standard deviation
+        for obs in self.obstacles:
+            x0, y0 = obs
+            for i in range(self.area_size):
+                for j in range(self.area_size):
+                    prob_map[j, i] += np.exp(-((i - x0) ** 2 + (j - y0) ** 2) / (2 * sigma ** 2))
+        return prob_map
+
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
         self.drone_pos = np.array([random.randint(0, self.area_size - 1), random.randint(0, self.area_size - 1)],
@@ -45,8 +56,10 @@ class DroneNavigation(gym.Env):
                                  dtype=np.float32)
         self.steps_taken = 0
         self.obstacles = self._generate_obstacles()
+        self.prob_map = self._generate_probability_map()
         self.path = [tuple(self.drone_pos)]
         self.step_count = 0
+        self.map_plotted = False  # Reset the flag when the environment is reset
         return self.drone_pos, {}
 
     def step(self, action):
@@ -74,26 +87,40 @@ class DroneNavigation(gym.Env):
             reward = -10  # Exceeded max steps
             done = True
         else:
-            reward = -1  # Penalize for each step taken
+            reward = -1  # Penalty for each step taken
+            threat_penalty = self.prob_map[int(self.drone_pos[1]), int(self.drone_pos[0])]
+            reward -= threat_penalty  # Penalty based on proximity to obstacles
             done = False
 
         truncated = self.steps_taken >= self.max_steps
         return self.drone_pos, reward, done, truncated, {}
 
     def render(self, mode='human'):
-        self.ax.clear()
-        self.ax.set_xlim(0, self.area_size)
-        self.ax.set_ylim(0, self.area_size)
+        if not self.map_plotted:
+            self.ax.clear()
+            self.ax.set_xlim(0, self.area_size)
+            self.ax.set_ylim(0, self.area_size)
 
-        # Plot goal
-        self.ax.plot(self.goal_pos[0], self.goal_pos[1], 'go', markersize=10)
+            # Plot probability map
+            x = np.arange(0, self.area_size)
+            y = np.arange(0, self.area_size)
+            X, Y = np.meshgrid(x, y)
+            c = self.ax.pcolormesh(X, Y, self.prob_map, cmap='coolwarm', shading='auto')
 
-        # Plot obstacles
-        for obs in self.obstacles:
-            self.ax.plot(obs[0], obs[1], 'rx', markersize=10)
+            # Add colorbar only once
+            self.colorbar = self.fig.colorbar(c, ax=self.ax)
 
-        # Plot start position
-        self.ax.plot(self.path[0][0], self.path[0][1], 'bo', markersize=10)
+            # Plot obstacles
+            for obs in self.obstacles:
+                self.ax.plot(obs[0], obs[1], 'rx', markersize=10)
+
+            # Plot goal
+            self.ax.plot(self.goal_pos[0], self.goal_pos[1], 'go', markersize=10)
+
+            # Plot start position
+            self.ax.plot(self.path[0][0], self.path[0][1], 'bo', markersize=10)
+
+            self.map_plotted = True
 
         # Plot path
         path_np = np.array(self.path)

@@ -48,7 +48,8 @@ To train the agent using the PPO algorithm and test it:
     ```bash
     probabilistic_drone_nav/
     ├── drone_env.py      # Custom environment definition
-    ├── train.py                     # Training script
+    ├── train_ppo.py                 # Training the agent with PPO
+    ├── train_dqn.py                 # Training the agent with DQN
     ├── requirements.txt             # Python dependencies
     ├── README.md                    # Project documentation
     └── plots/                       # Directory to save plots
@@ -56,7 +57,10 @@ To train the agent using the PPO algorithm and test it:
 ## Environment Details
 
 - **Environment Space**: The collection of possible positions of the drone on a 2D grid.
-- **Action Space**:
-- **Reward**: +100 for goal reaching, -10 for exceeding max steps, -1 for each step taken, additional penalty
-inversely proportional to obstacle proximity.
+- **Action Space**: Discrete actions for moving up, down, left and right.
+- **Reward**: +100 for goal reaching, -10 for exceeding max steps, -1 for each step taken, -50 for obstacle collision, additional penalty
+ for proximity to obstacles based on the probabilistic threat map.
 - **Done**: Episode ends when the drone reaches the goal, hits an obstacle or exceeds max steps. 
+
+## Algortihms
+Both PPO and DQN algorithms from Stable-Baselines3 are employed for training the agent.

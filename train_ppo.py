@@ -8,7 +8,7 @@ gym.envs.registration.register(
     entry_point='drone_env:DroneNavigation'
 )
 
-env = gym.make('DroneNavigation-v0', area_size=10, max_steps=300, save_path='plots')
+env = gym.make('DroneNavigation-v0', area_size=10, max_steps=100, save_path='plots_PPO')
 
 # Create the PPO model
 model = PPO('MlpPolicy', env, verbose=1)
@@ -24,11 +24,13 @@ model = PPO.load("ppo_drone_navigation")
 
 # Test the trained model
 obs, info = env.reset()
-env.render()  # Initialize the rendering
-for _ in range(200):
+env.render()
+for _ in range(100):
     action, _states = model.predict(obs)
     obs, rewards, done, truncated, info = env.step(action)
     env.render()
     if done or truncated:
         obs, info = env.reset()
-        env.render()  # Reinitialize the rendering
+        env.render()
+
+env.close()
