@@ -13,7 +13,7 @@ This repository contains a custom Gymnasium environment for a drone navigating f
 ### Prerequisites
 
 1. **Anaconda**: It's recommended to use Anaconda for managing the Python environment.
-2. **Python 3.8**: Ensure you have Python 3.8 installed.
+2. **Python 3.11.9**: Ensure you have Python 3.11.9 installed.
 
 ### Steps
 
@@ -24,7 +24,7 @@ This repository contains a custom Gymnasium environment for a drone navigating f
 
 2. **Create and activate a conda environment**:
     ```bash
-   conda create -n drone_env python=3.11
+   conda create -n drone_env python=3.11.9
    conda activate drone_env
    
 3. **Install the required packages**:
@@ -35,11 +35,10 @@ This repository contains a custom Gymnasium environment for a drone navigating f
 ## Usage
 
 ### Train the Agent
-To train the agent using the PPO algorithm and test it:
+Train the agent using the PPO or DQN algorithm and test it in a generated scenario:
 
-[//]: # (```bash)
-
-[//]: # (python train.py)
+   """```bash
+python train.py
 
 
 ## Project Structure
