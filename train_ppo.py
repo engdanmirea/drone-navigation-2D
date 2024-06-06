@@ -8,7 +8,7 @@ gym.envs.registration.register(
     entry_point='drone_env:DroneNavigation'
 )
 
-env = gym.make('DroneNavigation-v0', area_size=10, max_steps=100, save_path='plots')
+env = gym.make('DroneNavigation-v0', area_size=10, max_steps=300, save_path='plots')
 
 # Create the PPO model
 model = PPO('MlpPolicy', env, verbose=1)
