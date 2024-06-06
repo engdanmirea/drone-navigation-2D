@@ -19,13 +19,13 @@ This repository contains a custom Gymnasium environment for a drone navigating f
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your_username/probabilistic_drone_nav.git
-   cd probabilistic_drone_nav
+   https://github.com/engdanmirea/drone-navigation-2D.git
+   cd drone-navigation-2D
 
 2. **Create and activate a conda environment**:
     ```bash
-   conda create -n drone_navigation python=3.8
-   conda activate drone_navigation
+   conda create -n drone_env python=3.11
+   conda activate drone_env
    
 3. **Install the required packages**:
     ```bash
