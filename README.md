@@ -13,7 +13,7 @@ This repository contains a custom Gymnasium environment for a drone navigating f
 ### Prerequisites
 
 1. **Anaconda**: It's recommended to use Anaconda for managing the Python environment.
-2. **Python 3.11.9**: Ensure you have Python 3.11.9 installed.
+2. **Python 3.11**: Ensure you have Python 3.11 installed.
 
 ### Steps
 
@@ -24,8 +24,8 @@ This repository contains a custom Gymnasium environment for a drone navigating f
 
 2. **Create and activate a conda environment**:
     ```bash
-   conda create -n drone_env python=3.11.9
-   conda activate drone_env
+   conda create -n <env_name> python=3.11.9
+   conda activate <env_name>
    
 3. **Install the required packages**:
     ```bash
