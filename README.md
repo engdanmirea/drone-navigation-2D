@@ -37,7 +37,7 @@ This repository contains a custom Gymnasium environment for a drone navigating f
 ### Train the Agent
 Train the agent using the PPO or DQN algorithm and test it in a generated scenario:
 
- ```bash
+ '```bash
 python train_ppo.py
 python train_dqn.py
 
