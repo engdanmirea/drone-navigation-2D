@@ -52,7 +52,8 @@ python train_dqn.py
     ├── train_dqn.py                 # Training the agent with DQN
     ├── requirements.txt             # Python dependencies
     ├── README.md                    # Project documentation
-    └── plots/                       # Directory to save plots
+    └── plots_PPO/                       # Directory to save PPO plots
+    └── plots_DQN/                       # Directory to save DQN plots
     
 ## Environment Details
 
